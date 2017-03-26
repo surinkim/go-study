@@ -62,6 +62,44 @@ var (
 Methods
 =======
 
+#### Pointers vs. Values
+ - A methods can be defined for any named type (except a pointer or an interface); the receiver does not have to be a struct.
+
+<- code 6
+```go
+func Append(slice, data []byte) []byte {
+}
+//can convert to below code
+//  |
+//  |
+//  V
+type ByteSlice []byte
+func (slice ByteSlice) Append(data []byte) []byte {
+}
+
+```
+
+<- code 7
+```go
+func (p *ByteSlice) Append(data []byte) {
+    slice := *p
+    // Body as above, without the return.
+    *p = slice
+}
+```
+
+<- code 8
+```go
+func (p *ByteSlice) Write(data []byte) (n int, err error) {
+    slice := *p
+    // Again as above.
+    *p = slice
+    return len(data), nil
+}
+```
+
+<- [code 9](https://play.golang.org/p/X8dxkES5wu)
+
 Interfaces and other types
 =====================
 
