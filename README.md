@@ -74,6 +74,7 @@ func Append(slice, data []byte) []byte {
 //  |
 //  V
 type ByteSlice []byte
+
 func (slice ByteSlice) Append(data []byte) []byte {
 }
 
@@ -98,14 +99,30 @@ func (p *ByteSlice) Write(data []byte) (n int, err error) {
 }
 ```
 
+We pass the address of a ByteSlice because only *ByteSlice satisfies io.Writer. The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.
+
+This rule arises because pointer methods can modify the receiver; invoking them on a value would cause the method to receive a copy of the value, so any modifications would be discarded. The language therefore disallows this mistake.
+
 <- [code 9](https://play.golang.org/p/X8dxkES5wu)
+
+
+There is a handy exception, though. When the value is addressable, the language takes care of the common case of invoking a pointer method on a value by inserting the address operator automatically.
+
+<- [code 10](https://play.golang.org/p/ragem2G-Ca)
+
 
 Interfaces and other types
 =====================
 
+#### Interfaces
 
+#### Conversions
 
+#### Interface conversions and type assertions
 
+#### Generality
+
+#### Interfaces and methods
 
 
 
