@@ -9,7 +9,7 @@ Initialization
  - Because of the compile-time restriction, the expressions that define them must be constant expressions, evaluatable by the compiler. 
 
 
- <i class="icon-file"></i> [code 1](https://play.golang.org/p/ohyi3NvqQg)
+< - [code 1](https://play.golang.org/p/ohyi3NvqQg)
 
 ```golang
 const age int  = 10
@@ -23,21 +23,22 @@ const (
 
  - iota
 
-<i class="icon-file"></i> [code 2](http://www.cplusplus.com/reference/numeric/iota/)
+< - [code 2](http://www.cplusplus.com/reference/numeric/iota/)
 
 ```c++
+//c++ code
 int numbers[10];
 std::iota (numbers,numbers+10,100);
 
 ```
 
-   <i class="icon-file"></i> [code 3](https://play.golang.org/p/Sbwy_LVLtZ)
+   < - [code 3](https://play.golang.org/p/Sbwy_LVLtZ)
 
 
 #### Variables
 Variables can be initialized just like constants but the initializer can be a general expression computed at run time.
 
-<i class="icon-file"></i> code 4
+<- code 4
 
 ```golang
 var (
@@ -50,6 +51,12 @@ var (
 
 
 #### The init function
+
+ - `init` is called after all the variable declarations in the package have evaluated their initializers
+ - A common use of init functions is to verify or repair correctness of the program state before real execution begins.
+
+<- [code 5](http://stackoverflow.com/questions/24790175/when-is-the-init-function-in-go-golang-run)
+
 
 
 Methods
