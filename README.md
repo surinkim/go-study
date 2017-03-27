@@ -118,6 +118,7 @@ Interfaces and other types
  - [Fprintf](https://golang.org/pkg/fmt/#Fprintf)  can generate output to anything with a `Write` method. 
  - Usually given a name derived from the method, such as `io.Writer` for something that implements `Write`.
  - A type can implement multiple interfaces.
+ 
  <-code 11
 ```go
 type Sequence []int
