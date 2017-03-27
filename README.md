@@ -1,4 +1,4 @@
-
+[TOC]
 
 Initialization
 ===========
@@ -184,6 +184,7 @@ case Stringer:
 
 - type assertions
 
+<-code 15
 ```go
 str, ok := value.(string)
 if ok {
@@ -197,9 +198,77 @@ if ok {
 #### Generality
 
 #### Interfaces and methods
+- Since almost anything can have methods attached, almost anything can satisfy an interface. 
 
+<-code 16
+```go
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+```
 
+<-code 17
+```go
+// Simple counter server.
+type Counter struct {
+    n int
+}
 
+func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+    ctr.n++
+    fmt.Fprintf(w, "counter = %d\n", ctr.n)
+}
+```
+
+<-code 18
+```go
+// Simple counter server.
+type Counter struct {
+    n int
+}
+
+func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+    ctr.n++
+    fmt.Fprintf(w, "counter = %d\n", ctr.n)
+}
+```
+
+<-code 19
+```go
+// A channel that sends a notification on each visit.
+// (Probably want the channel to be buffered.)
+type Chan chan *http.Request
+
+func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+    ch <- req
+    fmt.Fprint(w, "notification sent")
+}
+```
+
+<-code 20
+```go
+// The HandlerFunc type is an adapter to allow the use of
+// ordinary functions as HTTP handlers.  If f is a function
+// with the appropriate signature, HandlerFunc(f) is a
+// Handler object that calls f.
+type HandlerFunc func(ResponseWriter, *Request)
+
+// ServeHTTP calls f(w, req).
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, req *Request) {
+    f(w, req)
+}
+```
+- The HandlerFunc type is an adapter to allow the use of ordinary functions as HTTP handlers. If f is a function with the appropriate signature, `HandlerFunc(f)` is a Handler that calls f.
+
+<-code 21
+```go
+// Argument server.
+func ArgServer(w http.ResponseWriter, req *http.Request) {
+    fmt.Fprintln(w, os.Args)
+}
+
+http.Handle("/args", http.HandlerFunc(ArgServer))
+```
 
 
 
