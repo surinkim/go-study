@@ -115,10 +115,84 @@ Interfaces and other types
 =====================
 
 #### Interfaces
+ - Interfaces in Go provide a way to specify the behavior of an object
+ - [Fprintf](https://golang.org/pkg/fmt/#Fprintf)  can generate output to anything with a `Write` method. 
+ - Usually given a name derived from the method, such as `io.Writer` for something that implements `Write`.
+ - A type can implement multiple interfaces.
+ <-code 11
+```go
+type Sequence []int
+
+// Methods required by sort.Interface.
+func (s Sequence) Len() int {
+    return len(s)
+}
+func (s Sequence) Less(i, j int) bool {
+    return s[i] < s[j]
+}
+func (s Sequence) Swap(i, j int) {
+    s[i], s[j] = s[j], s[i]
+}
+
+// Method for printing - sorts the elements before printing.
+func (s Sequence) String() string {
+    sort.Sort(s)
+    str := "["
+    for i, elem := range s {
+        if i > 0 {
+            str += " "
+        }
+        str += fmt.Sprint(elem)
+    }
+    return str + "]"
+}
+```
 
 #### Conversions
+<-code 12
+```go
+func (s Sequence) String() string {
+    sort.Sort(s)
+    return fmt.Sprint([]int(s))
+}
+```
+-  The conversion doesn't create a new value, it just temporarily acts as though the existing value has a new type. (There are other legal conversions, such as from integer to floating point, that do create a new value.)
+
+- It's an idiom in Go programs to convert the type of an expression to access a different set of methods. 
+
+
+<-[code 13](https://play.golang.org/p/a7YDyrrARp)
 
 #### Interface conversions and type assertions
+
+- type switches
+
+<-code 14
+```go
+type Stringer interface {
+    String() string
+}
+
+var value interface{} // Value provided by caller.
+switch str := value.(type) {
+case string:
+    return str
+case Stringer:
+    return str.String()
+}
+```
+
+- type assertions
+
+```go
+str, ok := value.(string)
+if ok {
+    fmt.Printf("string value is: %q\n", str)
+} else {
+    fmt.Printf("value is not a string\n")
+}
+```
+ 
 
 #### Generality
 
