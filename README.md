@@ -102,7 +102,7 @@ func (p *ByteSlice) Write(data []byte) (n int, err error) {
  - The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.
  - This rule arises because pointer methods can modify the receiver; invoking them on a value would cause the method to receive a copy of the value, so any modifications would be discarded. The language therefore disallows this mistake.
 
-<- [code 9](https://play.golang.org/p/X8dxkES5wu)
+<- [code 9](https://play.golang.org/p/uFAl2BlhUy)
 
 
 There is a handy exception, though. When the value is addressable, the language takes care of the common case of invoking a pointer method on a value by inserting the address operator automatically.
@@ -218,6 +218,8 @@ type Stream interface {
 func NewCTR(block Block, iv []byte) Stream
 ```
 - NewCTR applies not just to one specific encryption algorithm and data source but to any implementation of the Block interface and any Stream. Because they return interface values, replacing CTR encryption with other encryption modes is a localized change. 
+
+- [ref](https://play.golang.org/p/uFAl2BlhUy)
  
 
 #### Interfaces and methods
