@@ -247,14 +247,12 @@ func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 <-code 18
 ```go
-// Simple counter server.
-type Counter struct {
-    n int
-}
+// Simpler counter server.
+type Counter int
 
 func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-    ctr.n++
-    fmt.Fprintf(w, "counter = %d\n", ctr.n)
+    *ctr++
+    fmt.Fprintf(w, "counter = %d\n", *ctr)
 }
 ```
 
@@ -294,6 +292,6 @@ func ArgServer(w http.ResponseWriter, req *http.Request) {
 
 http.Handle("/args", http.HandlerFunc(ArgServer))
 ```
-
+- We have made an HTTP server from a struct, an integer, a channel, and a function, all because interfaces are just sets of methods, which can be defined for (almost) any type.
 
 
