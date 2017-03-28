@@ -196,6 +196,29 @@ if ok {
  
 
 #### Generality
+- [ref](http://blog.jonathanoliver.com/golang-has-generics/)
+- If a type exists only to implement an interface and will never have exported methods beyond that interface, there is no need to export the type itself. Exporting just the interface makes it clear the value has no interesting behavior beyond what is described in the interface
+ 
+- [crc32.NewIEEE](https://golang.org/pkg/hash/crc32/#NewIEEE), [adler32.New](https://golang.org/pkg/hash/adler32/#New)
+
+<-code 16
+```go
+type Block interface {
+    BlockSize() int
+    Encrypt(src, dst []byte)
+    Decrypt(src, dst []byte)
+}
+
+type Stream interface {
+    XORKeyStream(dst, src []byte)
+}
+
+// NewCTR returns a Stream that encrypts/decrypts using the given Block in
+// counter mode. The length of iv must be the same as the Block's block size.
+func NewCTR(block Block, iv []byte) Stream
+```
+- NewCTR applies not just to one specific encryption algorithm and data source but to any implementation of the Block interface and any Stream. Because they return interface values, replacing CTR encryption with other encryption modes is a localized change. 
+ 
 
 #### Interfaces and methods
 - Since almost anything can have methods attached, almost anything can satisfy an interface. 
